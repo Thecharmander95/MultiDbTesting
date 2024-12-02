@@ -20,9 +20,9 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 
-development:
-  <<: *default
-  database: multi_db_testing_development
+# development:
+#   <<: *default
+#   database: multi_db_testing_development
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -54,9 +54,32 @@ development:
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
-test:
-  <<: *default
-  database: multi_db_testing_test
+
+# Split Databases
+development:
+  primary:
+    database: MainMulti_development
+    adapter: postgresql
+    pool: 5
+  primary_replica:
+    database: MainMulti_development
+    adapter: postgresql
+    replica: true
+    pool: 5
+  secondary:
+    database: SecondMulti_development
+    adapter: postgresql
+    migrations_paths: db/second
+    pool: 5
+  secondary_replica:
+    database: SecondMulti_development
+    adapter: postgresql
+    replica: true
+    pool: 5
+
+# test:
+#   <<: *default
+#   database: multi_db_testing_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -78,8 +101,8 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
-production:
-  <<: *default
-  database: multi_db_testing_production
-  username: multi_db_testing
-  password: <%= ENV["MULTI_DB_TESTING_DATABASE_PASSWORD"] %>
+# production:
+#   <<: *default
+#   database: multi_db_testing_production
+#   username: multi_db_testing
+#   password: <%= ENV["MULTI_DB_TESTING_DATABASE_PASSWORD"] %>

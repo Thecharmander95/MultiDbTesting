@@ -1,0 +1,18 @@
+= form_for @uploader do |f|
+  - if @uploader.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@uploader.errors.count, "error")} prohibited this uploader from being saved:"
+      %ul
+        - @uploader.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :image, "Fun little image"
+    = f.file_field :image, accept: 'image/jpeg,image/gif,image/png,image/heic'
+    - if f.object.image.attached?
+      = image_tag f.object.image.variant(resize_to_limit: [400, 400])
+  .actions
+    = f.submit 'Save'

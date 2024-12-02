@@ -1,0 +1,21 @@
+%h1 Listing uploaders
+
+%table
+  %thead
+    %tr
+      %th Title
+      %th
+      %th
+      %th
+
+  %tbody
+    - @uploaders.each do |uploader|
+      %tr
+        %td= uploader.title
+        %td= link_to 'Show', uploader
+        %td= link_to 'Edit', edit_uploader_path(uploader)
+        %td= link_to 'Destroy', uploader, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Uploader', new_uploader_path
